@@ -7,7 +7,7 @@ def plot_residuals(rs, ss, rho, experiment:str):
     plt.plot(ss, marker='o', label='dual residual')
     plt.title(experiment + ', rho = ' + str(rho))
     plt.legend()
-    plt.savefig(f'{'_'.join(experiment.split())}_rho_{rho}.png')
+    plt.savefig(f'{"_".join(experiment.split())}_rho_{rho}.png')
     
 def generate_random_graph(n):
     Z = [np.random.rand(2) for i in range(n)]
