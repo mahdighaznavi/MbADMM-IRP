@@ -2,13 +2,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def plot_residuals(rs, ss, rho, experiment:str):
+def plot_residuals(rs, ss, rho, experiment: str):
     plt.plot(rs, marker='+', label='primal residual')
     plt.plot(ss, marker='o', label='dual residual')
     plt.title(experiment + ', rho = ' + str(rho))
     plt.legend()
     plt.savefig(f'{"_".join(experiment.split())}_rho_{rho}.png')
-    
+
+
+def plot_time(observations:list, runtimes:list, experiment:str):
+    plt.plot(observations, runtimes, marker='o')
+    plt.ylabel("Running Time (sec)")
+    plt.xlabel("Number of Observations")
+    plt.legend()
+    plt.savefig(f'{"_".join(experiment.split())}_runtime.png')
+
+
 def generate_random_graph(n):
     Z = [np.random.rand(2) for i in range(n)]
     E_1 = []
