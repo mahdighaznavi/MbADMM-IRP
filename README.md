@@ -10,7 +10,9 @@ Unofficial implementation of "The Application of Multi-block ADMM on Isotonic Re
 - `timesteps`: timestep for runtime experiment
 # Execution example
 ```
-python experiments.py --n=1000 --rho=0.1 --problem='SIR' --exp='residual' --num_iters=100
+python experiments.py --n=1000 --rho=0.1 \
+  --problem='SIR' --exp='residual' --num_iters=100
 ```
 output:
+![Smoothed_Isotonic_Regression_rho_0.1.png](Smoothed_Isotonic_Regression_rho_0.1.png)
 
