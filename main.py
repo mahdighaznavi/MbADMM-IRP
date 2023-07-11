@@ -2,14 +2,14 @@ import numpy as np
 from numpy import linalg as LA
 
 
-def multidimensional_ordering(E_1, E_2, Y, W, num_iters, rho = 1):
+def multidimensional_ordering(E_1, E_2, Y, W, rho = 1, num_iters=100):
     """
 
     :param E_1: representation of edge set E (|E|, n)
     :param E_2: representation of edge set E (|E|, n)
     :param Y: predictors
     :param W: assigned weights
-    :return: g, h, and v
+    :return: g, h, v, and list primal and dual residuals
     """
     E_size = E_1.shape[0]
     n = E_1.shape[1]
@@ -18,15 +18,17 @@ def multidimensional_ordering(E_1, E_2, Y, W, num_iters, rho = 1):
     h = np.ones(n)
     y_1 = np.ones(E_size)
     v = np.ones(E_size)
+    r = []
+    s = []
     for k in range(num_iters):
         v = np.maximum(-np.matmul(E_1, g) + np.matmul(E_2, h) - y_1 / rho, np.zeros_like(y_1))
         new_g = np.matmul(
             LA.inv(
-                W.diagonal() +
+                np.diag(W) +
                 rho * np.matmul(E_1.T, E_1) +
                 rho * np.identity(n)
             ),
-            np.matmul(W.diagonal(), Y) +
+            np.matmul(np.diag(W), Y) +
             rho * np.matmul(np.matmul(E_1.T, E_2), h) -
             rho * np.matmul(E_1.T, v) -
             np.matmul(E_1.T, y_1) +
@@ -35,11 +37,11 @@ def multidimensional_ordering(E_1, E_2, Y, W, num_iters, rho = 1):
         )
         new_h = np.matmul(
             LA.inv(
-                W.diagonal() +
+                np.diag(W) +
                 rho * np.matmul(E_2.T, E_2) +
                 rho * np.identity(n)
             ),
-            Y.diagonal() +
+            np.matmul(np.diag(W), Y) +
             rho * np.matmul(np.matmul(E_2.T, E_1), new_g) +
             rho * np.matmul(E_2.T, v) +
             np.matmul(E_2.T, y_1) +
@@ -54,11 +56,12 @@ def multidimensional_ordering(E_1, E_2, Y, W, num_iters, rho = 1):
         s_1 = rho * np.matmul(E_1, new_g - g) + s_2
 
         # calculating primal and dual residual
-        r = np.sqrt(np.power(LA.norm(r_1), 2) + np.power(LA.norm(r_2), 2))
-        s = np.sqrt(np.power(LA.norm(s_1), 2) + np.power(LA.norm(s_2), 2) + np.power(LA.norm(s_3), 2))
+        r.append(np.sqrt(np.power(LA.norm(r_1), 2) + np.power(LA.norm(r_2), 2)))
+        s.append(np.sqrt(np.power(LA.norm(s_1), 2) + np.power(LA.norm(s_2), 2) + np.power(LA.norm(s_3), 2)))
 
         y_1 = y_1 + rho * r_1
         y_2 = y_2 + rho * r_2
         g = np.copy(new_g)
         h = np.copy(new_h)
 
+    return g, h, v, r, s
