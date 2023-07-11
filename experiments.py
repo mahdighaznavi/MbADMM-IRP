@@ -15,7 +15,7 @@ n = args.n
 rho = args.rho
 num_iters = args.num_iters
 
-if problem == 'MO':
+if args.problem == 'MO':
     E_1, E_2 = generate_random_graph(n)
     _, _, _, r, s = multidimensional_ordering(E_1=E_1, E_2=E_2, Y=1000 * np.random.rand(n), W=np.ones(n), rho=rho,
                                               num_iters=num_iters)
@@ -28,7 +28,7 @@ if problem == 'MO':
     #                                           num_iters=10)
     # plot_residuals(r, s, rho=10, experiment='Multi-dimensional Ordering')
 
-elif problem == 'SIR':
+elif args.problem == 'SIR':
     _, _, _, r, s = smoothed_isotonic_regression(n=n, rho=rho, num_iters=num_iters)
     plot_residuals(r, s, rho=rho, experiment='Smoothed Isotonic Regression')
 else:
