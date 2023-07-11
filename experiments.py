@@ -5,14 +5,14 @@ import argparse
 import time
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--n', type=int, default=1000)
-parser.add_argument('--rho', type=float, default=0.1)
+parser.add_argument('--n', type=int, default=300)
+parser.add_argument('--rho', type=float, default=10)
 parser.add_argument('--num_iters', type=int, default=100)
-parser.add_argument('--problem', type=str, default='SIR',
+parser.add_argument('--problem', type=str, default='MO',
                     help='MO: multidimensional ordering, SIR: smoothed isotonic regression')
-parser.add_argument('--exp', type=str, default='residual',
+parser.add_argument('--exp', type=str, default='time',
                     help='residual: plot residual in each iteration, time: plot runtime per number of samples')
-parser.add_argument('--timestep', type=int, default=100, help='timestep for runtime experiment')
+parser.add_argument('--timestep', type=int, default=10, help='timestep for runtime experiment')
 args = parser.parse_args()
 
 n = args.n
@@ -27,7 +27,7 @@ if args.problem == 'MO':
         plot_residuals(r, s, rho=rho, experiment='Multi-dimensional Ordering')
     elif args.exp == 'time':
         runtime = []
-        for i in range(100, n + 1, args.timestep):
+        for i in range(10, n + 1, args.timestep):
             tmp = 0
             repeat = 5
             for j in range(repeat):
@@ -36,6 +36,7 @@ if args.problem == 'MO':
                 multidimensional_ordering(E_1=E_1, E_2=E_2, Y=1000 * np.random.rand(i), W=np.ones(i), rho=rho,
                                           num_iters=num_iters)
                 tmp += time.time() - start_time
+            print(i)
             runtime.append(tmp / repeat)
         plot_time(list(range(1, n + 1, args.timestep)), runtime, experiment='Multi-dimensional Ordering')
     else:
@@ -47,7 +48,7 @@ elif args.problem == 'SIR':
         plot_residuals(r, s, rho=rho, experiment='Smoothed Isotonic Regression')
     elif args.exp == 'time':
         runtime = []
-        for i in range(100, n + 1, args.timestep):
+        for i in range(10, n + 1, args.timestep):
             tmp = 0
             repeat = 5
             for j in range(repeat):
