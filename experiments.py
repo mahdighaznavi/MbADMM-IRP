@@ -1,8 +1,8 @@
 from main import multidimensional_ordering, smoothed_isotonic_regression
-from utils import generate_random_graph
+from utils import generate_random_graph, plot_residuals
 import numpy as np
-import matplotlib.pyplot as plt
 import argparse
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--n', type=int, default=1000)
@@ -10,14 +10,6 @@ parser.add_argument('--rho', type=float, default=0.1)
 parser.add_argument('--num_iters', type=int, default=100)
 parser.add_argument('--problem', type=str, default='MO', help='MO: multidimensional ordering, SIR: smoothed isotonic regression')
 args = parser.parse_args()
-
-def plot_residuals(rs, ss, rho, experiment:str):
-    plt.plot(rs, marker='+', label='primal residual')
-    plt.plot(ss, marker='o', label='dual residual')
-    plt.title(experiment + ', rho = ' + str(rho))
-    plt.legend()
-    plt.show()
-
 
 n = args.n
 rho = args.rho
