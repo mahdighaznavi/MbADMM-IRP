@@ -6,11 +6,11 @@ import time
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--n', type=int, default=300)
-parser.add_argument('--rho', type=float, default=10)
+parser.add_argument('--rho', type=float, default=0.1)
 parser.add_argument('--num_iters', type=int, default=100)
-parser.add_argument('--problem', type=str, default='MO',
+parser.add_argument('--problem', type=str, default='SIR',
                     help='MO: multidimensional ordering, SIR: smoothed isotonic regression')
-parser.add_argument('--exp', type=str, default='time',
+parser.add_argument('--exp', type=str, default='residual',
                     help='residual: plot residual in each iteration, time: plot runtime per number of samples')
 parser.add_argument('--timestep', type=int, default=10, help='timestep for runtime experiment')
 args = parser.parse_args()
